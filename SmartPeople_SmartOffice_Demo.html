@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartPeople / SmartOffice | AI Summit 2026 Demo</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#17243b;--muted:#718096;--brand:#2563eb;--line:#e5ebf3;--good:#12805c;--warn:#b7791f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:#101c33;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header strong{font-size:19px}header small{color:#c5d1e3;display:block}
+.demo{background:#fff2d8;color:#7a4b00;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 75px)}
+nav{background:#182640;padding:22px 14px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#dbe5f4;padding:12px;border-radius:9px;margin:3px 0;cursor:pointer;font-size:14px}
+nav button.active,nav button:hover{background:#2c4163;color:white}
+main{padding:28px;max-width:1400px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 4px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #1b2b4408}
+.kpi{font-size:28px;font-weight:750;margin-top:7px}.label{font-size:13px;color:var(--muted)}
+button.primary,.action{background:var(--brand);color:white;border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:650}
+button.secondary{background:#edf2f8;color:#243650;border:0;border-radius:8px;padding:9px 12px;cursor:pointer}
+input,select,textarea{width:100%;padding:10px;border:1px solid #d7e0eb;border-radius:8px;margin:6px 0 12px;font:inherit}
+label{font-size:13px;font-weight:650}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted)}
+.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#e8f5ef;color:var(--good);font-size:12px;font-weight:700}
+.notice{padding:12px 14px;background:#fff7e8;border:1px solid #f5dfb5;border-radius:10px;color:#77510d;margin:14px 0;font-size:13px}
+.hidden{display:none}.bar{height:9px;background:#e9eef5;border-radius:8px;overflow:hidden}.bar span{display:block;height:100%;background:var(--brand);border-radius:8px}
+.chat{background:#f7f9fc;border-radius:12px;padding:14px;min-height:120px;white-space:pre-wrap}
+footer{padding:18px 5%;color:#78869b;font-size:12px;text-align:center}
+@media(max-width:760px){.layout{grid-template-columns:1fr}nav{display:flex;overflow:auto;padding:8px}nav button{white-space:nowrap;width:auto}main{padding:17px}}
+</style></head>
+<body>
+<header><div><strong>SmartPeople / SmartOffice</strong><small>Bangladesh AI Summit 2026 · Product Review Prototype</small></div><span class="demo">SIMULATED DEMO · SAMPLE DATA</span></header>
+<div class="layout"><nav id="nav"></nav><main><div class="top"><div><h1 id="heading">Overview</h1><div class="muted" id="subheading">Explore the product workflow</div></div><button class="secondary" onclick="resetDemo()">↻ Reset demo</button></div><div id="content"></div></main></div>
+<footer>Independent educational prototype based on prospectus-described features. Not the original vendor software. No real accounts, integrations or backend services.</footer>
+<script>
+const pages=[
+{icon:"▦",title:"Overview",desc:"Workforce operations at a glance",html:`<div class="notice">This prototype demonstrates brochure-listed HRMS workflows using fictional employee data.</div><div class="grid"><div class="card"><div class="label">Total employees</div><div class="kpi">248</div><span class="pill">Sample data</span></div><div class="card"><div class="label">Present today</div><div class="kpi">221</div><div class="bar"><span style="width:89%"></span></div></div><div class="card"><div class="label">Pending leave requests</div><div class="kpi" id="pendingKpi">4</div></div><div class="card"><div class="label">Payroll status</div><div class="kpi">Ready</div></div></div><div class="card"><h3>HR operations snapshot</h3><p>Attendance, leave, shifts and payroll are presented in one sample workspace.</p><button class="primary" onclick="go(2)">Review leave requests</button></div>`},
+{icon:"✦",title:"AI HR Assistant",desc:"Illustrative conversational HR interface",html:`<div class="card"><h3>Ask the HR Assistant</h3><p class="muted">Try a sample question. Responses are predefined for this prototype.</p><input id="q" placeholder="e.g. How many annual leave days do I have?"><button class="primary" onclick="let q=document.getElementById('q').value;respond('answer',q.toLowerCase().includes('leave')?'Sample answer: Annual leave balance is shown in the employee profile. Please confirm policy with HR.':'Sample answer: I can help with attendance, leave policy, payroll dates and employee records in this demo.')">Send question</button><div class="chat" id="answer">Assistant is ready. Ask a sample HR question.</div></div>`},
+{icon:"✓",title:"Leave Management",desc:"Approve or reject a sample leave request",html:`<div class="card"><h3>Pending requests</h3><table><thead><tr><th>Employee</th><th>Leave</th><th>Dates</th><th>Status</th><th>Action</th></tr></thead><tbody id="leaveRows"><tr><td>Sarah Ahmed</td><td>Annual</td><td>12–14 Nov</td><td id="s1"><span class="pill" style="background:#fff3d9;color:#8a5a00">Pending</span></td><td><button class="primary" onclick="decision('s1',this,'Approved')">Approve</button> <button class="secondary" onclick="decision('s1',this,'Rejected')">Reject</button></td></tr><tr><td>Rahim Hasan</td><td>Sick</td><td>15 Nov</td><td id="s2"><span class="pill" style="background:#fff3d9;color:#8a5a00">Pending</span></td><td><button class="primary" onclick="decision('s2',this,'Approved')">Approve</button> <button class="secondary" onclick="decision('s2',this,'Rejected')">Reject</button></td></tr></tbody></table><p id="leaveMsg" class="muted">Choose an action to update the sample status.</p></div>`,init:()=>{}},
+{icon:"◷",title:"Attendance & Shifts",desc:"Sample attendance and shift overview",html:`<div class="grid"><div class="card"><div class="label">On time</div><div class="kpi">198</div></div><div class="card"><div class="label">Late arrivals</div><div class="kpi">23</div></div><div class="card"><div class="label">Absent</div><div class="kpi">27</div></div></div><div class="card"><h3>Shift roster</h3><table><tr><th>Shift</th><th>Time</th><th>Employees</th></tr><tr><td>Morning</td><td>08:00–16:00</td><td>110</td></tr><tr><td>General</td><td>09:00–17:00</td><td>98</td></tr><tr><td>Evening</td><td>14:00–22:00</td><td>40</td></tr></table></div>`},
+{icon:"♙",title:"Employees",desc:"Search fictional employee records",html:`<div class="card"><input id="empSearch" oninput="filterRows('empSearch','empTable')" placeholder="Search employee name or department"><table id="empTable"><thead><tr><th>Name</th><th>Department</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td>Sarah Ahmed</td><td>Finance</td><td>Executive</td><td>Active</td></tr><tr><td>Rahim Hasan</td><td>Engineering</td><td>Developer</td><td>Active</td></tr><tr><td>Nadia Islam</td><td>HR</td><td>Manager</td><td>Active</td></tr><tr><td>Tanvir Hossain</td><td>Sales</td><td>Officer</td><td>Active</td></tr></tbody></table></div>`},
+{icon:"৳",title:"Payroll & Reports",desc:"Illustrative payroll summary and report",html:`<div class="grid"><div class="card"><div class="label">Sample monthly payroll</div><div class="kpi">৳ 82.4L</div></div><div class="card"><div class="label">Processed employees</div><div class="kpi">248</div></div></div><div class="card"><h3>Payroll report</h3><p>Basic salary · Allowances · Deductions · Tax templates</p><button class="primary" onclick="toast('Sample payroll report generated for presentation purposes.')">Generate sample report</button></div>`}
+]
+function decision(id,btn,status){document.getElementById(id).innerHTML='<span class="pill">'+status+'</span>';btn.parentElement.querySelectorAll('button').forEach(b=>b.disabled=true);document.getElementById('leaveMsg').textContent='Sample request updated: '+status;document.getElementById('pendingKpi').textContent='3';}
+;
+let current=0;
+function go(i){current=i;document.querySelectorAll('nav button').forEach((b,j)=>b.classList.toggle('active',j===i));document.getElementById('heading').textContent=pages[i].title;document.getElementById('subheading').textContent=pages[i].desc;document.getElementById('content').innerHTML=pages[i].html; if(pages[i].init) pages[i].init();}
+document.getElementById('nav').innerHTML=pages.map((p,i)=>`<button onclick="go(${i})">${p.icon} &nbsp; ${p.title}</button>`).join('');
+function resetDemo(){go(0)}
+function toast(msg){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='notice';document.getElementById('content').prepend(el)}el.textContent=msg}
+function filterRows(inputId,tableId){let q=document.getElementById(inputId).value.toLowerCase();document.querySelectorAll(`#${tableId} tbody tr`).forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function respond(id,answer){document.getElementById(id).textContent=answer}
+function decision(id,btn,status){document.getElementById(id).innerHTML='<span class="pill">'+status+'</span>';btn.parentElement.querySelectorAll('button').forEach(b=>b.disabled=true);document.getElementById('leaveMsg').textContent='Sample request updated: '+status;document.getElementById('pendingKpi').textContent='3';}
+go(0);
+</script></body></html>

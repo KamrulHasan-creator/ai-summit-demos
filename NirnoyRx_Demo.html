@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NirnoyRx | AI Summit 2026 Demo</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#17243b;--muted:#718096;--brand:#078b91;--line:#e5ebf3;--good:#12805c;--warn:#b7791f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:#101c33;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header strong{font-size:19px}header small{color:#c5d1e3;display:block}
+.demo{background:#fff2d8;color:#7a4b00;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 75px)}
+nav{background:#182640;padding:22px 14px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#dbe5f4;padding:12px;border-radius:9px;margin:3px 0;cursor:pointer;font-size:14px}
+nav button.active,nav button:hover{background:#2c4163;color:white}
+main{padding:28px;max-width:1400px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 4px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #1b2b4408}
+.kpi{font-size:28px;font-weight:750;margin-top:7px}.label{font-size:13px;color:var(--muted)}
+button.primary,.action{background:var(--brand);color:white;border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:650}
+button.secondary{background:#edf2f8;color:#243650;border:0;border-radius:8px;padding:9px 12px;cursor:pointer}
+input,select,textarea{width:100%;padding:10px;border:1px solid #d7e0eb;border-radius:8px;margin:6px 0 12px;font:inherit}
+label{font-size:13px;font-weight:650}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted)}
+.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#e8f5ef;color:var(--good);font-size:12px;font-weight:700}
+.notice{padding:12px 14px;background:#fff7e8;border:1px solid #f5dfb5;border-radius:10px;color:#77510d;margin:14px 0;font-size:13px}
+.hidden{display:none}.bar{height:9px;background:#e9eef5;border-radius:8px;overflow:hidden}.bar span{display:block;height:100%;background:var(--brand);border-radius:8px}
+.chat{background:#f7f9fc;border-radius:12px;padding:14px;min-height:120px;white-space:pre-wrap}
+footer{padding:18px 5%;color:#78869b;font-size:12px;text-align:center}
+@media(max-width:760px){.layout{grid-template-columns:1fr}nav{display:flex;overflow:auto;padding:8px}nav button{white-space:nowrap;width:auto}main{padding:17px}}
+</style></head>
+<body>
+<header><div><strong>NirnoyRx</strong><small>Bangladesh AI Summit 2026 · Product Review Prototype</small></div><span class="demo">SIMULATED DEMO · SAMPLE DATA</span></header>
+<div class="layout"><nav id="nav"></nav><main><div class="top"><div><h1 id="heading">Overview</h1><div class="muted" id="subheading">Explore the product workflow</div></div><button class="secondary" onclick="resetDemo()">↻ Reset demo</button></div><div id="content"></div></main></div>
+<footer>Independent educational prototype based on prospectus-described features. Not the original vendor software. No real accounts, integrations or backend services.</footer>
+<script>
+const pages=[
+{icon:"▦",title:"Overview",desc:"Connected clinic and diagnostic workflow — sample dashboard",html:`<div class="notice">Healthcare workflow simulation only. Use fictional patient records; no clinical decisions or real prescriptions are made.</div><div class="grid"><div class="card"><div class="label">Today's appointments</div><div class="kpi">42</div></div><div class="card"><div class="label">Registered patients</div><div class="kpi">1,286</div></div><div class="card"><div class="label">Pending lab reports</div><div class="kpi" id="pendingReports">8</div></div><div class="card"><div class="label">Approved reports</div><div class="kpi">34</div></div></div><div class="card"><h3>End-to-end journey</h3><p>Registration → Test Order → Sample Collection → Lab Received → Approval → Report Delivery</p><button class="primary" onclick="go(3)">Open lab workflow</button></div>`},
+{icon:"♙",title:"Patient Registration",desc:"Register a fictional patient",html:`<div class="card"><h3>New patient</h3><label>Patient name</label><input id="pname" placeholder="Demo Patient"><label>Phone (fictional)</label><input id="phone" placeholder="01XXXXXXXXX"><label>Visit type</label><select id="visit"><option>Doctor consultation</option><option>Diagnostic test</option><option>Follow-up</option></select><button class="primary" onclick="let n=document.getElementById('pname').value;respond('regResult',n?'Demo patient registered: '+n+' · ID: DEMO-1042':'Please enter a sample patient name.')">Register patient</button><div id="regResult" class="chat">Registration confirmation will appear here.</div></div>`},
+{icon:"▤",title:"Prescription Workflow",desc:"Simulated voice-to-draft workflow",html:`<div class="card"><h3>AI Voice Prescription — simulation</h3><p class="muted">No microphone is accessed. This demonstrates the review-and-approve workflow only.</p><button class="primary" onclick="respond('voiceResult','Sample consultation transcript created. Draft prescription is ready for clinician review. No real medicine or dosage recommendation is generated.')">Simulate voice capture</button><div class="chat" id="voiceResult">Step 1: Simulate consultation capture.</div><p><b>Workflow:</b> Capture (simulated) → Draft → Clinician review → Sign (simulated)</p><button class="secondary" onclick="toast('Sample draft marked as reviewed. No prescription issued.')">Mark sample draft reviewed</button></div>`},
+{icon:"◷",title:"Diagnostic Lab Workflow",desc:"Track sample collection and report status",html:`<div class="card"><h3>Sample tracking</h3><table><thead><tr><th>Sample ID</th><th>Test</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>LAB-1001</td><td>CBC</td><td id="lab1"><span class="pill" style="background:#fff3d9;color:#8a5a00">Collected</span></td><td><button class="primary" onclick="labUpdate('lab1',this)">Mark received</button></td></tr><tr><td>LAB-1002</td><td>HbA1c</td><td id="lab2"><span class="pill" style="background:#fff3d9;color:#8a5a00">Received</span></td><td><button class="primary" onclick="labApprove('lab2',this)">Approve report</button></td></tr></tbody></table><p class="muted">All test names and records are illustrative.</p></div>`},
+{icon:"▧",title:"Reports & Delivery",desc:"Generate a fictional sample report",html:`<div class="card"><h3>Diagnostic report preview</h3><label>Patient</label><input value="Demo Patient (fictional)" readonly><label>Test</label><select><option>Sample CBC report</option><option>Sample HbA1c report</option></select><div class="notice">Illustrative report only — values are omitted and must not be used for diagnosis or treatment.</div><button class="primary" onclick="toast('Sample report prepared for demo. No real result has been generated.')">Prepare sample report</button><button class="secondary" onclick="toast('Demo delivery status: simulated as sent to referring doctor.')">Simulate doctor delivery</button></div>`},
+{icon:"⌕",title:"Drug Register",desc:"Illustrative medicine lookup interface",html:`<div class="card"><h3>Sample medicine search</h3><input id="drugSearch" placeholder="Search sample entries" oninput="filterRows('drugSearch','drugTable')"><table id="drugTable"><tr><th>Sample entry</th><th>Category</th><th>Note</th></tr><tr><td>Paracetamol</td><td>Analgesic</td><td>Lookup demo only</td></tr><tr><td>Metformin</td><td>Antidiabetic</td><td>Lookup demo only</td></tr><tr><td>Amlodipine</td><td>Antihypertensive</td><td>Lookup demo only</td></tr></table><p class="muted">Not a clinical reference. No dosage or interaction advice is provided.</p></div>`}
+]
+function labUpdate(id,btn){document.getElementById(id).innerHTML='<span class="pill">Received</span>';btn.disabled=true;toast('Sample lab status updated to Received.')}
+function labApprove(id,btn){document.getElementById(id).innerHTML='<span class="pill">Approved</span>';btn.disabled=true;document.getElementById('pendingReports').textContent='7';toast('Sample report marked approved.')}
+;
+let current=0;
+function go(i){current=i;document.querySelectorAll('nav button').forEach((b,j)=>b.classList.toggle('active',j===i));document.getElementById('heading').textContent=pages[i].title;document.getElementById('subheading').textContent=pages[i].desc;document.getElementById('content').innerHTML=pages[i].html; if(pages[i].init) pages[i].init();}
+document.getElementById('nav').innerHTML=pages.map((p,i)=>`<button onclick="go(${i})">${p.icon} &nbsp; ${p.title}</button>`).join('');
+function resetDemo(){go(0)}
+function toast(msg){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='notice';document.getElementById('content').prepend(el)}el.textContent=msg}
+function filterRows(inputId,tableId){let q=document.getElementById(inputId).value.toLowerCase();document.querySelectorAll(`#${tableId} tbody tr`).forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function respond(id,answer){document.getElementById(id).textContent=answer}
+function labUpdate(id,btn){document.getElementById(id).innerHTML='<span class="pill">Received</span>';btn.disabled=true;toast('Sample lab status updated to Received.')} function labApprove(id,btn){document.getElementById(id).innerHTML='<span class="pill">Approved</span>';btn.disabled=true;document.getElementById('pendingReports').textContent='7';toast('Sample report marked approved.')}
+go(0);
+</script></body></html>

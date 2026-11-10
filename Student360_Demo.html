@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student360 | AI Summit 2026 Demo</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#17243b;--muted:#718096;--brand:#7357d5;--line:#e5ebf3;--good:#12805c;--warn:#b7791f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:#101c33;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header strong{font-size:19px}header small{color:#c5d1e3;display:block}
+.demo{background:#fff2d8;color:#7a4b00;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 75px)}
+nav{background:#182640;padding:22px 14px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#dbe5f4;padding:12px;border-radius:9px;margin:3px 0;cursor:pointer;font-size:14px}
+nav button.active,nav button:hover{background:#2c4163;color:white}
+main{padding:28px;max-width:1400px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 4px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #1b2b4408}
+.kpi{font-size:28px;font-weight:750;margin-top:7px}.label{font-size:13px;color:var(--muted)}
+button.primary,.action{background:var(--brand);color:white;border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:650}
+button.secondary{background:#edf2f8;color:#243650;border:0;border-radius:8px;padding:9px 12px;cursor:pointer}
+input,select,textarea{width:100%;padding:10px;border:1px solid #d7e0eb;border-radius:8px;margin:6px 0 12px;font:inherit}
+label{font-size:13px;font-weight:650}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted)}
+.pill{display:inline-block;padding:4px 9px;border-radius:20px;background:#e8f5ef;color:var(--good);font-size:12px;font-weight:700}
+.notice{padding:12px 14px;background:#fff7e8;border:1px solid #f5dfb5;border-radius:10px;color:#77510d;margin:14px 0;font-size:13px}
+.hidden{display:none}.bar{height:9px;background:#e9eef5;border-radius:8px;overflow:hidden}.bar span{display:block;height:100%;background:var(--brand);border-radius:8px}
+.chat{background:#f7f9fc;border-radius:12px;padding:14px;min-height:120px;white-space:pre-wrap}
+footer{padding:18px 5%;color:#78869b;font-size:12px;text-align:center}
+@media(max-width:760px){.layout{grid-template-columns:1fr}nav{display:flex;overflow:auto;padding:8px}nav button{white-space:nowrap;width:auto}main{padding:17px}}
+</style></head>
+<body>
+<header><div><strong>Student360</strong><small>Bangladesh AI Summit 2026 · Product Review Prototype</small></div><span class="demo">SIMULATED DEMO · SAMPLE DATA</span></header>
+<div class="layout"><nav id="nav"></nav><main><div class="top"><div><h1 id="heading">Overview</h1><div class="muted" id="subheading">Explore the product workflow</div></div><button class="secondary" onclick="resetDemo()">↻ Reset demo</button></div><div id="content"></div></main></div>
+<footer>Independent educational prototype based on prospectus-described features. Not the original vendor software. No real accounts, integrations or backend services.</footer>
+<script>
+const pages=[
+{icon:"▦",title:"Overview",desc:"Student success operating system — sample dashboard",html:`<div class="notice">Illustrative student data only. Predictions and recommendations are simulated, not validated assessments.</div><div class="grid"><div class="card"><div class="label">Active students</div><div class="kpi">8,420</div></div><div class="card"><div class="label">Average skill readiness</div><div class="kpi">76%</div></div><div class="card"><div class="label">Matched opportunities</div><div class="kpi">1,284</div></div><div class="card"><div class="label">At-risk alerts</div><div class="kpi">126</div></div></div><div class="card"><h3>Student journey</h3><p>Discover → Learn → Build Skills → Prove → Earn → Progress</p><button class="primary" onclick="go(2)">Explore career readiness</button></div>`},
+{icon:"✦",title:"AI Academic Assistant",desc:"Sample academic support conversation",html:`<div class="card"><h3>Personal AI Companion</h3><input id="ask" placeholder="Ask about study planning or a course topic"><button class="primary" onclick="let q=document.getElementById('ask').value;respond('reply',q?'Demo response: Break this topic into learning objectives, review core concepts, then practise with examples. This is a predefined sample response.':'Please enter a question first.')">Ask assistant</button><div class="chat" id="reply">Hello! I can demonstrate academic support and study planning.</div></div>`},
+{icon:"◈",title:"Career Guidance",desc:"Explore a sample career recommendation",html:`<div class="card"><h3>Career pathway explorer</h3><label>Choose an interest area</label><select id="career"><option>AI & Data</option><option>Software Engineering</option><option>Business Analytics</option><option>Cybersecurity</option></select><button class="primary" onclick="let c=document.getElementById('career').value;respond('careerResult','Suggested pathway for '+c+': strengthen fundamentals → complete 2 portfolio projects → earn relevant credentials → practise interviews → apply for internships. Illustrative guidance only.')">Generate pathway</button><div class="chat" id="careerResult">Select an interest area to see a sample pathway.</div></div>`},
+{icon:"▤",title:"CV Review",desc:"Illustrative CV feedback interface",html:`<div class="card"><h3>Sample CV review</h3><label>Paste a short CV summary</label><textarea id="cv" rows="4" placeholder="Example: CSE graduate with Python, SQL and machine learning projects..."></textarea><button class="primary" onclick="let v=document.getElementById('cv').value;respond('cvResult',v?'Sample review: Make project outcomes measurable, highlight technical skills near the top, add links to portfolio work and tailor experience to the target role. Demo score: 78/100.':'Please enter a CV summary first.')">Review sample CV</button><div class="chat" id="cvResult">Feedback will appear here.</div></div>`},
+{icon:"▥",title:"Skill-Gap Analysis",desc:"Compare sample skills with a target role",html:`<div class="card"><h3>Illustrative skill profile</h3>${[['Python',82],['SQL',68],['Machine Learning',55],['Communication',74]].map(x=>`<p>${x[0]} — ${x[1]}%</p><div class="bar"><span style="width:${x[1]}%"></span></div>`).join('')}<p class="muted">These percentages are fictional demo values.</p><button class="primary" onclick="toast('Sample learning plan created: Python practice, SQL projects and ML fundamentals.')">Create learning plan</button></div>`},
+{icon:"◎",title:"Opportunities & Credentials",desc:"Sample opportunity matching and digital passport",html:`<div class="card"><h3>Matched opportunities</h3><table><tr><th>Opportunity</th><th>Match</th><th>Action</th></tr><tr><td>Junior Data Analyst</td><td>88%</td><td><button class="secondary" onclick="toast('Saved sample opportunity.')">Save</button></td></tr><tr><td>AI Intern</td><td>81%</td><td><button class="secondary" onclick="toast('Saved sample opportunity.')">Save</button></td></tr><tr><td>Python Developer</td><td>79%</td><td><button class="secondary" onclick="toast('Saved sample opportunity.')">Save</button></td></tr></table><h3>Digital Competency Passport</h3><p>Python · SQL · Project Management · Communication</p><span class="pill">Illustrative profile</span></div>`}
+];
+let current=0;
+function go(i){current=i;document.querySelectorAll('nav button').forEach((b,j)=>b.classList.toggle('active',j===i));document.getElementById('heading').textContent=pages[i].title;document.getElementById('subheading').textContent=pages[i].desc;document.getElementById('content').innerHTML=pages[i].html; if(pages[i].init) pages[i].init();}
+document.getElementById('nav').innerHTML=pages.map((p,i)=>`<button onclick="go(${i})">${p.icon} &nbsp; ${p.title}</button>`).join('');
+function resetDemo(){go(0)}
+function toast(msg){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='notice';document.getElementById('content').prepend(el)}el.textContent=msg}
+function filterRows(inputId,tableId){let q=document.getElementById(inputId).value.toLowerCase();document.querySelectorAll(`#${tableId} tbody tr`).forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function respond(id,answer){document.getElementById(id).textContent=answer}
+
+go(0);
+</script></body></html>
